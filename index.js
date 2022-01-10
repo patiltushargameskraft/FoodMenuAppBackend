@@ -1,8 +1,13 @@
+/* 
+mongoose.connect('mongodb+srv://shri2k:shri2k@cluster0.ywnii.mongodb.net/foodMenuApp')
+.then(() => console.log('Connected to MongoDB'));
+*/
 
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const hostname = '127.0.0.1';
 const port = 3000;
+
 
 const app = express();
 
