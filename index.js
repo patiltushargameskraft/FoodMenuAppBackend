@@ -1,31 +1,38 @@
 
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
-const hostname = '127.0.0.1';
+const mysql = require('mysql');
 const port = 3000;
-
 const app = express();
 
+
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'Tushar@2101',
+});
+
+db.connect((err) => {
+  if(err) throw err;
+  console.log('MySql Connected');
+});
+
+app.get('/createdb', (req,res) => {
+  let sql = 'CREATE DATABASE nodemysql';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    res.send('Databse Created');
+    console.log(result);
+  });
+});
+
+
 app.use(express.json());
-var database
 
 app.get('/', (req, res) => {
-    res.send('Welcome to mongodb Api')
+    res.send('Welcome to Node Js server');
 })
 
-app.get('/api', (req, res) => {
-  database.collection('exp').find({}).toArray((err, result) =>{
-    if(err) throw err;
-    res.send(result) 
-    console.log(result)
-  }) 
-})
-
-app.listen(port,hostname, () => {
-    MongoClient.connect('mongodb://127.0.0.1:27017', {useNewUrlParser: true}, (error, result) => {
-        if(error) throw error
-        database = result.db('exp')
-        console.log('connection successful')
-    })
+app.listen(port, () => {
+    console.log('server started on port 3000');
 })
 
