@@ -1,4 +1,3 @@
-
 const express = require('express');
 const mysql = require('mysql');
 const port = 3000;
@@ -6,9 +5,10 @@ const app = express();
 
 
 const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'your_password',
+  host: 'bi30tloqqg6aqnsjzk5h-mysql.services.clever-cloud.com',
+  user: 'uapdthevueb7t3hg',
+  password: 'zEZ6Q84UgLSHREfJwowg',
+  database: 'bi30tloqqg6aqnsjzk5h'
 });
 
 db.connect((err) => {
@@ -16,8 +16,10 @@ db.connect((err) => {
   console.log('MySql Connected');
 });
 
-app.get('/createdb', (req,res) => {
-  let sql = 'CREATE DATABASE nodemysql';
+app.use(express.json());
+
+app.get('/getUsers', (req,res) => {
+  let sql = `select * from user`
   db.query(sql, (err, result) => {
     if(err) throw err;
     res.send('Databse Created');
@@ -26,7 +28,6 @@ app.get('/createdb', (req,res) => {
 });
 
 
-app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('Welcome to Node Js server');
