@@ -51,4 +51,21 @@ inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = 
 return query;
 }
 
-module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes}
+const addResToFav = (userId, resId) => {
+    return (
+        `
+        insert into fav (restaurant_id, user_id) values (${resId}, ${userId});
+        `
+    )
+}
+
+const removeResFromFav = (userId, resId) => {
+    return (
+        `
+        delete from fav
+        where restaurant_id = ${resId} and user_id = ${userId}
+        `
+    )
+}
+
+module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, addResToFav, removeResFromFav}

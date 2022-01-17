@@ -11,9 +11,18 @@ const getData = (res, query) => {
     });
 }
 
-router.get('/search/:id', (req, res) => {
+const setData = (res, query) => {
+    console.log(query);
+    db.query(query, (err,rows) => {
+        if(err) throw err;
+        console.log('Data Updated in DB');
+        res.send({success:true, data:rows});
+    });
+}
+
+router.get('/search/:resId', (req, res) => {
     let {dishName, resName, cuisine, dishDesc, dishCat} = req.body;
-    const {id: resId} = req.params
+    const {resId} = req.params
     if(dishName){
         getData(res, sql.getDishByName(resId, dishName));
     }
@@ -30,8 +39,18 @@ router.get('/search/:id', (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
-    const {id: resId} = req.params;
+router.post('/addResToFav/:userId/:resId', (req, res) => {
+    const {resId, userId} = req.params;
+    setData(res, sql.addResToFav(userId, resId));
+})
+
+router.delete('/removeResFromFav/:userId/:resId', (req, res) => {
+    const {resId, userId} = req.params;
+    setData(res, sql.removeResFromFav(userId, resId));
+})
+
+router.get('/:resId', (req, res) => {
+    const {resId} = req.params;
     getData(res, sql.getAllDishes(resId));
 })
 
