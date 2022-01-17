@@ -15,7 +15,6 @@ router.get('/search/:id', (req, res) => {
     let {dishName, resName, cuisine, dishDesc, dishCat} = req.body;
     const {id: resId} = req.params
     if(dishName){
-        console.log(sql.getDishByName(resId, dishName));
         getData(res, sql.getDishByName(resId, dishName));
     }
     else if(resName){

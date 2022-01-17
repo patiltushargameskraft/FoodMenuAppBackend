@@ -17,4 +17,17 @@ const getAddonsForDish = (dishId) => {
     return query;
 }
 
-module.exports = {getDishDetails, getAddonsForDish};
+const addDishToCart = (userId, dishId, quantity) => {
+    const query = 
+    `
+    INSERT INTO order_item (quantity, user_id, dish_id) VALUES (${quantity}, ${dishId}, ${userId})
+    `
+    return query;
+}
+
+const mapAddonsWithOrder =
+`
+INSERT INTO order_item_add_on (order_item_id, add_on_id) values ?
+`
+
+module.exports = {getDishDetails, getAddonsForDish, addDishToCart, mapAddonsWithOrder};
