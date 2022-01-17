@@ -15,8 +15,9 @@ router.get('/getCategories', (req, res) => {
     getData(res, sql.getCategories);
 });
 
-router.get('/getFavRes', (req, res) => {
-    getData(res, sql.getFavRes);
+router.get('/getFavRes/:userId', (req, res) => {
+    const {userId} = req.params;
+    getData(res, sql.getFavRes(userId));
 })
 
 router.get('/', (req, res) => {

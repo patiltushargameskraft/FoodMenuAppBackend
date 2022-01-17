@@ -68,4 +68,13 @@ const removeResFromFav = (userId, resId) => {
     )
 }
 
-module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, addResToFav, removeResFromFav}
+const getResDetails = (resId) => {
+    const query = 
+    `
+    select restaurant.* from restaurant
+    where id = ${resId}
+    `
+    return query;
+    }
+
+module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, getResDetails,addResToFav, removeResFromFav}

@@ -23,7 +23,7 @@ router.post('/addDishToCart', (req, res) => {
                 });
             }            
             const orderId = result.insertId;
-            if(addons.length){
+            if(addons && addons.length){
                 const rowsToMap = addons.map(addon => {
                     return [orderId, addon];
                 })
@@ -58,13 +58,13 @@ router.post('/addDishToCart', (req, res) => {
 })
 
 
-router.get('/getAddons/:id', (req, res) => {
-    const {id: dishId} = req.params;
+router.get('/getAddons/:dishId', (req, res) => {
+    const {dishId} = req.params;
     getData(res, sql.getAddonsForDish(dishId));
 })
 
-router.get('/:id', (req, res) => {
-    const {id: dishId} = req.params;
+router.get('/:dishId', (req, res) => {
+    const {dishId} = req.params;
     getData(res, sql.getDishDetails(dishId));
 })
 
