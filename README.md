@@ -35,6 +35,7 @@ GET
 
 -- DISH (/dish/)
 
+
 GET
 
 /getAddons/:dishId => get all the addons for the current dish
@@ -70,6 +71,7 @@ req.body{
 -- RESTAURANT (/restaurant/)
 
 GET
+
 
 /:resId => getDetails about Restaurant
 
@@ -154,14 +156,13 @@ response Format  {
         
 DELETE
 
+
 /checkOutCartItems/:userId => empties the cart 
 
 /deleteFromCart/:userId/:orderId => removes an item from the cart
 
 
-
-
-
+/
 
 
 
