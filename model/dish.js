@@ -20,7 +20,7 @@ const getAddonsForDish = (dishId) => {
 const addDishToCart = (userId, dishId, quantity) => {
     const query = 
     `
-    INSERT INTO order_item (quantity, user_id, dish_id) VALUES (${quantity}, ${dishId}, ${userId})
+    INSERT INTO order_item (quantity, user_id, dish_id) VALUES (${quantity}, ${userId}, ${dishId})
     `
     return query;
 }
