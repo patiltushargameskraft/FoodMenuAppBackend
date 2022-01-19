@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const db = require('../dbconfig')
 const sql = require('../model/dish.js');
+const Joi = require('joi');
 
 const getData = (res, query) => {
     console.log(query);
@@ -13,7 +14,36 @@ const getData = (res, query) => {
 
 router.post('/addDishToCart', (req, res) => {
     const {userId, dishId, quantity, addons} = req.body;
-    
+    if(typeof dishId === 'undefined'){
+        res.send("dishId is Required");
+    }else{
+        db.query(`select min_addon, max_addon from dish where id = ${dishId}`, (err, result) => {
+            if(err) {
+                res.send(err);
+                return;
+            }
+            else if(!result.length){
+                res.send("dishId does not belong to a valid dish")
+                return;
+            }
+            else{
+                const {minAddon, maxAddon} = result[0];
+                const dishSchema = Joi.object({
+                    userId: Joi.number().required(),
+                    dishId: Joi.number().required(),
+                    quantity: Joi.number().required(),
+                    addons: Joi.array().items(Joi.number()).min(minAddon).max(maxAddon)
+                })
+            
+                const {error} = dishSchema.validate(req.body)
+                if(error){
+                    res.send(error);
+                    return;
+                }
+            }
+        })
+    }
+
     db.beginTransaction(function(err) {
         if (err) { throw err; }
         db.query(sql.addDishToCart(userId, dishId, quantity), function(err, result) {

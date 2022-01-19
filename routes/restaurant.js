@@ -21,8 +21,6 @@ const setData = (res, query) => {
 }
 
 router.post('/search/:resId', (req, res) => {
-    let {dishName, cuisine, dishDesc, dishCat} = req.body;
-    const {resId} = req.params
     const {dishName, cuisine, dishDesc, dishCat} = req.body;
     const {resId} = req.params;
     if(typeof dishName !== 'undefined'){
