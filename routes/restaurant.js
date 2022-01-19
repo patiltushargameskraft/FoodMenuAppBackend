@@ -23,14 +23,15 @@ const setData = (res, query) => {
 router.post('/search/:resId', (req, res) => {
     let {dishName, cuisine, dishDesc, dishCat} = req.body;
     const {resId} = req.params
-    if(dishName){
+    const {dishName, cuisine, dishDesc, dishCat} = req.body;
+    const {resId} = req.params;
+    if(typeof dishName !== 'undefined'){
         getData(res, sql.getDishByName(resId, dishName));
-    }
-    else if(cuisine){
+    }else if(typeof cuisine !== 'undefined'){
         getData(res, sql.getDishByCuisine(resId, cuisine));
-    }else if(dishDesc){
-        getData(res, sql.getDishByDesc(resId, cuisine));
-    }else if(dishCat){
+    }else if(typeof dishDesc !== 'undefined'){
+        getData(res, sql.getDishByDesc(resId, dishDesc));
+    }else if(typeof dishCat !== 'undefined'){
         getData(res, sql.getDishByCategory(resId, dishCat));
     }else{
         getData(res, sql.getAllDishes(resId));
