@@ -20,7 +20,7 @@ const setData = (res, query) => {
     });
 }
 
-router.get('/search/:resId', (req, res) => {
+router.post('/search/:resId', (req, res) => {
     let {dishName, cuisine, dishDesc, dishCat} = req.body;
     const {resId} = req.params
     if(dishName){

@@ -11,7 +11,7 @@ getData = (res, query) => {
     });
 }
 
-router.get('/', (req, res) => {
+router.post('/', (req, res) => {
     const {dishName, resName, cuisine, dishDesc, dishCat} = req.body;
     if(dishName){
         getData(res, sql.getDishbyName(dishName));

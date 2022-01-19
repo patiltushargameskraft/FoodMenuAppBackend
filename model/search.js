@@ -48,4 +48,4 @@ limit 10
 `)
 }
 
-module.exports = {getDishByCategory, getDishByDesc, getDishByCuisine, getDishByCategory, getResByName, getAllDishes}
+module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getResByName, getAllDishes}
