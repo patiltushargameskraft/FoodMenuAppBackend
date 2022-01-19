@@ -13,16 +13,16 @@ getData = (res, query) => {
 
 router.post('/', (req, res) => {
     const {dishName, resName, cuisine, dishDesc, dishCat} = req.body;
-    if(dishName){
-        getData(res, sql.getDishbyName(dishName));
+    if(typeof dishName !== 'undefined'){
+        getData(res, sql.getDishByName(dishName));
     }
-    else if(resName){
+    else if(typeof resName !== 'undefined'){
         getData(res, sql.getResByName(resName));
-    }else if(cuisine){
+    }else if(typeof cuisine !== 'undefined'){
         getData(res, sql.getDishByCuisine(cuisine));
-    }else if(dishDesc){
+    }else if(typeof dishDesc !== 'undefined'){
         getData(res, sql.getDishByDesc(dishDesc));
-    }else if(dishCat){
+    }else if(typeof dishCat !== 'undefined'){
         getData(res, sql.getDishByCategory(dishCat));
     }else{
         getData(res, sql.getAllDishes);

@@ -8,7 +8,7 @@ const getDishByName = (name) => {
 return(
 `
 select * from dish
-where dish.name like '%${name}'
+where dish.name like '%${name}%'
 `)
 }
 
@@ -43,8 +43,7 @@ const getResByName = (name) => {
 return (
 `
 select * from restaurant
-where match(name) against('${name}')
-limit 10
+where name like '%${name}%'
 `)
 }
 
