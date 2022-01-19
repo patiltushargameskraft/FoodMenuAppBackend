@@ -37,11 +37,13 @@ router.post('/search/:resId', (req, res) => {
 });
 
 router.post('/addResToFav/:userId/:resId', (req, res) => {
+    if(err) throw err;
     const {resId, userId} = req.params;
     setData(res, sql.addResToFav(userId, resId));
 })
 
 router.delete('/removeResFromFav/:userId/:resId', (req, res) => {
+    if(err) throw err;
     const {resId, userId} = req.params;
     setData(res, sql.removeResFromFav(userId, resId));
 })
