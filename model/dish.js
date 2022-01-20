@@ -25,9 +25,19 @@ const addDishToCart = (userId, dishId, quantity) => {
     return query;
 }
 
+const getInstancesInCart = (userId, dishId) => {
+    const query = 
+    `
+    select count(id)
+    from order_item
+    where dish_id = ${dishId} and user_id = ${userId}
+    `
+    return query;
+}
+
 const mapAddonsWithOrder =
 `
 INSERT INTO order_item_add_on (order_item_id, add_on_id) values ?
 `
 
-module.exports = {getDishDetails, getAddonsForDish, addDishToCart, mapAddonsWithOrder};
+module.exports = {getDishDetails, getAddonsForDish, addDishToCart, mapAddonsWithOrder, getInstancesInCart};

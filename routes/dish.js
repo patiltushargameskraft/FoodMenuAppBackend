@@ -87,6 +87,10 @@ router.post('/addDishToCart', (req, res) => {
     });      
 })
 
+router.get('/getInstancesInCart/:dishId/:userId', (req, res) => {
+    const {userId, dishId} = req.params;
+    getData(res, sql.getInstancesInCart(userId, dishId));
+})
 
 router.get('/getAddons/:dishId', (req, res) => {
     const {dishId} = req.params;
