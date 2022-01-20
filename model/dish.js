@@ -28,7 +28,7 @@ const addDishToCart = (userId, dishId, quantity) => {
 const getInstancesInCart = (userId, dishId) => {
     const query = 
     `
-    select count(id)
+    select count(id) as count
     from order_item
     where dish_id = ${dishId} and user_id = ${userId}
     `
