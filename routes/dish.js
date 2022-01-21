@@ -17,9 +17,9 @@ router.post('/addDishToCart', (req, res) => {
     if(typeof dishId === 'undefined'){
         res.send("dishId is Required");
     }else{
-        if(validateAddons(dishId, req, res) === 0){
-            return;
-        }
+        // if(validateAddons(dishId, req, res) === 0){
+        //     return;
+        // }
     }
 
     db.beginTransaction(function(err) {
