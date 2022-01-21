@@ -16,10 +16,11 @@ router.post('/addDishToCart', (req, res) => {
     const {userId, dishId, quantity, addons} = req.body;
     if(typeof dishId === 'undefined'){
         res.send("dishId is Required");
+        return;
     }else{
-        // if(validateAddons(dishId, req, res) === 0){
-        //     return;
-        // }
+        if(validateAddons(dishId, req, res) === 0){
+            return;
+        }
     }
 
     db.beginTransaction(function(err) {
@@ -93,7 +94,8 @@ const validateAddons = (dishId, req, res) => {
             return 0;
         }
         else{
-            const {minAddon, maxAddon} = result[0];
+            const {min_addon: minAddon, max_addon: maxAddon} = result[0];
+            console.log(minAddon, maxAddon);
             const dishSchema = Joi.object({
                 userId: Joi.number().required(),
                 dishId: Joi.number().required(),
