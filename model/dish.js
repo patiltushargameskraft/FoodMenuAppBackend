@@ -40,4 +40,14 @@ const mapAddonsWithOrder =
 INSERT INTO order_item_add_on (order_item_id, add_on_id) values ?
 `
 
-module.exports = {getDishDetails, getAddonsForDish, addDishToCart, mapAddonsWithOrder, getInstancesInCart};
+const increaseQuantityInCart = (orderId) => {
+    return (
+    `
+    UPDATE order_item 
+    set quantity = quantity + 1
+    where id = ${orderId}
+    `
+    )
+}
+
+module.exports = {getDishDetails, getAddonsForDish, addDishToCart, mapAddonsWithOrder, getInstancesInCart, increaseQuantityInCart};
