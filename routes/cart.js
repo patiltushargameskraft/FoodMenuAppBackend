@@ -48,7 +48,25 @@ router.get('/getOrderItemDetail/:userId/:orderItemId', (req, res) => {
 
 router.get('/:userId', (req, res) => {
     const {userId} = req.params;
-    getData(res, sql.getAllItemsInCart(userId));
+    
+    db.query(sql.getAllItemsInCart(userId) , async (err,rows) => {
+        if(err) throw err;
+        const queryResults = async () => await Promise.all(
+            rows.map(async (item) => {
+                return new Promise((resolve, reject) => {
+                    db.query(sql.getAddonsForOrderItem(item.order_id), (err, result) => {
+                        if(err) return reject(err);
+                        else {
+                            item.addons = result;
+                            return resolve(item);
+                        }
+                    })
+                })
+            })
+        );
+        const results = await queryResults();
+        res.send({success: true, data: results});
+    });
 })
 
 module.exports = router;

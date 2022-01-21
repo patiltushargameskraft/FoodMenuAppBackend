@@ -17,7 +17,7 @@ router.post('/addDishToCart', (req, res) => {
     if(typeof dishId === 'undefined'){
         res.send("dishId is Required");
     }else{
-        if(validateAddons(dishId, res) === 0){
+        if(validateAddons(dishId, req, res) === 0){
             return;
         }
     }
@@ -82,7 +82,7 @@ router.get('/:dishId', (req, res) => {
 
 module.exports = router;
 
-const validateAddons = (dishId, res) => {
+const validateAddons = (dishId, req, res) => {
     db.query(`select min_addon, max_addon from dish where id = ${dishId}`, (err, result) => {
         if(err) {
             res.send(err);
