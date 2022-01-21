@@ -31,6 +31,21 @@ router.delete('/checkOutCartItems/:userId', (req, res) => {
     setData(res, sql.checkOutCartItems(userId));
 })
 
+
+router.get('/getOrderItemDetail/:userId/:orderItemId', (req, res) => {
+    const {userId, orderItemId} = req.params;
+    db.query(sql.getOrderItemDetail(userId, orderItemId), (err,rows) => {
+        if(err) throw err;
+        let result = rows;
+        db.query(sql.getAddonsForOrderItem(orderItemId), (err, rows) => {
+            if(err) throw err;
+            result[0].addons = rows;
+            console.log('Data received from Db:');
+            res.send({success:true, data:result});
+        });
+    });
+})
+
 router.get('/:userId', (req, res) => {
     const {userId} = req.params;
     getData(res, sql.getAllItemsInCart(userId));
