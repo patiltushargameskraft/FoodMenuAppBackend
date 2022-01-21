@@ -17,31 +17,9 @@ router.post('/addDishToCart', (req, res) => {
     if(typeof dishId === 'undefined'){
         res.send("dishId is Required");
     }else{
-        db.query(`select min_addon, max_addon from dish where id = ${dishId}`, (err, result) => {
-            if(err) {
-                res.send(err);
-                return;
-            }
-            else if(!result.length){
-                res.send("dishId does not belong to a valid dish")
-                return;
-            }
-            else{
-                const {minAddon, maxAddon} = result[0];
-                const dishSchema = Joi.object({
-                    userId: Joi.number().required(),
-                    dishId: Joi.number().required(),
-                    quantity: Joi.number().required(),
-                    addons: Joi.array().items(Joi.number()).min(minAddon).max(maxAddon)
-                })
-            
-                const {error} = dishSchema.validate(req.body)
-                if(error){
-                    res.send(error);
-                    return;
-                }
-            }
-        })
+        if(validateAddons(dishId, res) === 0){
+            return;
+        }
     }
 
     db.beginTransaction(function(err) {
@@ -103,3 +81,32 @@ router.get('/:dishId', (req, res) => {
 })
 
 module.exports = router;
+
+const validateAddons = (dishId, res) => {
+    db.query(`select min_addon, max_addon from dish where id = ${dishId}`, (err, result) => {
+        if(err) {
+            res.send(err);
+            return 0;
+        }
+        else if(!result.length){
+            res.send("dishId does not belong to a valid dish")
+            return 0;
+        }
+        else{
+            const {minAddon, maxAddon} = result[0];
+            const dishSchema = Joi.object({
+                userId: Joi.number().required(),
+                dishId: Joi.number().required(),
+                quantity: Joi.number().required(),
+                addons: Joi.array().items(Joi.number()).min(minAddon).max(maxAddon)
+            })
+        
+            const {error} = dishSchema.validate(req.body)
+            if(error){
+                res.send(error);
+                return 0;
+            }
+        }
+        return 1;
+    })
+}
