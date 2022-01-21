@@ -77,4 +77,12 @@ const getResDetails = (resId) => {
     return query;
     }
 
+const getCategoriesForRestaurant = (resId) => {
+    const query = 
+    `
+    select categories.name from categories
+    inner join restaurant
+    `
+}
+
 module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, getResDetails,addResToFav, removeResFromFav}

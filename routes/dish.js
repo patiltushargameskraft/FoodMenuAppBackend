@@ -51,6 +51,7 @@ router.post("/addDishToCart", (req, res) => {
     if (duplicateOrderId) {
       db.query(sql.increaseQuantityInCart(duplicateOrderId), (err, rows) => {
         if (err) throw err;
+        console.log("Duplicate Found, Quantity Increased");
         res.send(rows);
       });
     } else {
@@ -101,12 +102,17 @@ router.post("/addDishToCart", (req, res) => {
               });
             }
             res.send(result);
+            return;
           }
         );
       });
     }
   });
 });
+
+router.post('/increaseQuantityInCart/:orderId', (req, res) => {
+  getData(res, sql.increaseQuantityInCart(req.params.orderId));
+})
 
 router.get("/getInstancesInCart/:userId/:dishId", (req, res) => {
   const { userId, dishId } = req.params;
@@ -158,12 +164,6 @@ const validateAddons = (dishId, req, res) => {
 const checkDuplicate = (cartItems, dishId, addons) => {
   let index = 0;
   for (index = 0; index < cartItems.length; index++) {
-    console.log(
-      cartItems[index].dish_id,
-      dishId,
-      cartItems[index].addons.map((addonDetails) => addonDetails.id),
-      addons
-    );
     if (
       _.isEqual(cartItems[index].dish_id, dishId) &&
       _.isEqual(
