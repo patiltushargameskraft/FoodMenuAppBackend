@@ -12,7 +12,7 @@ const getDishByName = (resId, name) => {
     `
     select dish.* from dish
     inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
-    where dish.name like '%${name}%'
+    where dish.name like "%${name}%"
     `
     return query;
 }
@@ -22,7 +22,7 @@ const query =
 `
 select dish.* from dish
 inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
-where match(dish.description) against('${desc}')
+where match(dish.description) against("${desc}")
 limit 10
 `
 return query;
@@ -33,7 +33,7 @@ const query =
 `
 select dish.* from dish
 inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
-where cuisine like '${cuisine}'
+where cuisine like "${cuisine}"
 `
 return query;
 }
@@ -43,7 +43,7 @@ const query =
 `
 select dish.* from categories
 inner join category_dish
-on category_dish.categories_id = (select id where categories.name = '${category}')
+on category_dish.categories_id = (select id where categories.name = "${category}")
 inner join dish
 on category_dish.dish_id = dish.id
 inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
@@ -85,4 +85,13 @@ const getCategoriesForRestaurant = (resId) => {
     `
 }
 
-module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, getResDetails,addResToFav, removeResFromFav}
+const getIdNameMap = (resId) => {
+    return(
+        `
+        select name from restaurant
+        where id = ${resId}
+        `
+    )
+}
+
+module.exports = {getDishByName, getDishByCategory, getDishByDesc, getDishByCuisine, getAllDishes, getResDetails,addResToFav, removeResFromFav, getIdNameMap}

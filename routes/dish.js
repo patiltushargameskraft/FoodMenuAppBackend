@@ -17,14 +17,15 @@ const getData = (res, query) => {
   });
 };
 
-router.post("/addDishToCart", (req, res) => {
+router.post("/addDishToCart", async (req, res) => {
   const { userId, dishId, quantity, addons } = req.body;
   if (typeof dishId === "undefined") {
     res.send("dishId is Required");
     return;
   } else {
-    if (validateAddons(dishId, req, res) === 0) {
-      return;
+    const check = await validateAddons(dishId, req, res);
+    if(check !== 'successfull'){
+      res.send({success: flase, message: check});
     }
   }
 
@@ -68,7 +69,7 @@ router.post("/addDishToCart", (req, res) => {
               });
             }
             const orderId = result.insertId;
-            if (addons && addons.length) {
+            if (typeof addons !== 'undefined' && addons.length) {
               const rowsToMap = addons.map((addon) => {
                 return [orderId, addon];
               });
@@ -131,34 +132,32 @@ router.get("/:dishId", (req, res) => {
 
 module.exports = router;
 
-const validateAddons = (dishId, req, res) => {
-  db.query(
-    `select min_addon, max_addon from dish where id = ${dishId}`,
-    (err, result) => {
-      if (err) {
-        res.send(err);
-        return 0;
-      } else if (!result.length) {
-        res.send("dishId does not belong to a valid dish");
-        return 0;
-      } else {
-        const { min_addon: minAddon, max_addon: maxAddon } = result[0];
-        const dishSchema = Joi.object({
-          userId: Joi.number().required(),
-          dishId: Joi.number().required(),
-          quantity: Joi.number().required(),
-          addons: Joi.array().items(Joi.number()).min(minAddon).max(maxAddon),
-        });
-
-        const { error } = dishSchema.validate(req.body);
-        if (error) {
-          res.send(error);
-          return 0;
+const validateAddons = async (dishId, req, res) => {
+  return new Promise((resolve, reject) => {
+     db.query(
+      `select min_addon, max_addon from dish where id = ${dishId}`,
+      (err, result) => {
+        if (err) {
+          return reject("Server Error");
+        } else if (!result.length) {
+          return reject("dishId does not belong to a valid dish");
+        } else {
+          const { min_addon: minAddon, max_addon: maxAddon } = result[0];
+          const dishSchema = Joi.object({
+            userId: Joi.number().required(),
+            dishId: Joi.number().required(),
+            quantity: Joi.number().required(),
+            addons: Joi.array().items(Joi.number()).min(minAddon).max(maxAddon),
+          });
+          const { error } = dishSchema.validate(req.body);
+          if (error) {
+            return reject(error);
+          }
         }
+        return resolve('successfull');
       }
-      return 1;
-    }
-  );
+    );
+  })
 };
 
 const checkDuplicate = (cartItems, dishId, addons) => {
