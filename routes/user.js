@@ -7,7 +7,10 @@ const getData = (res, query) => {
     db.query(query, (err,rows) => {
         if(err) throw err;
         console.log('Data received from Db:');
-        res.send({success:true, data:rows});
+        if(rows.length === 0){
+            res.send({success: false, data: rows});
+        }
+        else res.send({success:true, data:rows});
     });
 }
 
