@@ -1,3 +1,12 @@
+const checkIfExist = (name) => {
+    return (
+        `
+        select * from user
+        where name = "${name}"
+        `
+    )
+}
+
 const checkUser = (name, password) => {
     return (
         `
@@ -16,4 +25,4 @@ const addUser = (name, password) => {
     )
 }
 
-module.exports = {checkUser, addUser}
+module.exports = {checkUser, addUser, checkIfExist}
