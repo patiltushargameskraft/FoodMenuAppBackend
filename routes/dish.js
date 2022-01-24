@@ -48,7 +48,7 @@ router.post("/addDishToCart", async (req, res) => {
         })
       );
     const results = await queryResults();
-    let duplicateOrderId = checkDuplicate(results, dishId, addons);
+    let duplicateOrderId = checkDuplicate(results, userId, dishId, addons);
     if (duplicateOrderId) {
       db.query(sql.increaseQuantityInCart(duplicateOrderId), (err, rows) => {
         if (err) throw err;
@@ -160,7 +160,7 @@ const validateAddons = async (dishId, req, res) => {
   })
 };
 
-const checkDuplicate = (cartItems, dishId, addons) => {
+const checkDuplicate = (cartItems, userId, dishId, addons) => {
   let index = 0;
   for (index = 0; index < cartItems.length; index++) {
     if (
@@ -168,6 +168,7 @@ const checkDuplicate = (cartItems, dishId, addons) => {
       _.isEqual(
         cartItems[index].addons.map((addonDetails) => addonDetails.id),
         addons
+        && cartItems[index].user_id === userId
       )
     ) {
       return cartItems[index].order_id;
