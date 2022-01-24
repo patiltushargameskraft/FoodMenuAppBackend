@@ -43,7 +43,7 @@ return query;
 const getDishByCategory = (resId, category) => {
 const query = 
 `
-select dish.* from categories
+select distinct(dish.id) as uniqueIds, dish.* from categories
 inner join category_dish
 on category_dish.categories_id = (select id where categories.name like "${category}%")
 inner join dish
