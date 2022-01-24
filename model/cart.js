@@ -38,6 +38,16 @@ const deleteItemFromCart = (orderId, userId) => {
     )
 }
 
+const decreaseQuantityInCart = (orderId) => {
+    return (
+        `
+        update order_item
+        set quantity = quantity - 1
+        where id = ${orderId}
+        `
+    )
+}
+
 const checkOutCartItems = (userId) => {
     return (
         `
@@ -46,4 +56,4 @@ const checkOutCartItems = (userId) => {
     )
 }
 
-module.exports = {getAllItemsInCart, getOrderItemDetail,checkOutCartItems, deleteItemFromCart, getAddonsForOrderItem};
+module.exports = {getAllItemsInCart, getOrderItemDetail,checkOutCartItems, deleteItemFromCart, getAddonsForOrderItem, decreaseQuantityInCart};
