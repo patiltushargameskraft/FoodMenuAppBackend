@@ -13,6 +13,7 @@ const getDishByName = (resId, name) => {
     select dish.* from dish
     inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
     where dish.name like "%${name}%"
+    limit 10
     `
     return query;
 }
@@ -33,7 +34,8 @@ const query =
 `
 select dish.* from dish
 inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
-where cuisine like "${cuisine}"
+where cuisine like "${cuisine}%"
+limit 10
 `
 return query;
 }
@@ -43,10 +45,11 @@ const query =
 `
 select dish.* from categories
 inner join category_dish
-on category_dish.categories_id = (select id where categories.name = "${category}")
+on category_dish.categories_id = (select id where categories.name like "${category}%")
 inner join dish
 on category_dish.dish_id = dish.id
 inner join restaurant on dish.restaurant_id = ${resId} and dish.restaurant_id = restaurant.id
+limit 10
 `
 return query;
 }
