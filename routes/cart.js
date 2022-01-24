@@ -31,7 +31,7 @@ router.delete('/checkOutCartItems/:userId', (req, res) => {
     setData(res, sql.checkOutCartItems(userId));
 })
 
-router.delete('/decreaseQuantityInCart/:orderId', (req, res) => {
+router.post('/decreaseQuantityInCart/:orderId', (req, res) => {
     const {orderId} = req.params;
     setData(res, sql.decreaseQuantityInCart(orderId));
 })
